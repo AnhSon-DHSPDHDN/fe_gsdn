@@ -1,0 +1,122 @@
+.navbar{
+  height: 70px;
+  width: 100%;
+  top: 0;
+  position: fixed;
+  padding: 16px 0px;
+  overflow: hidden;
+  z-index: 1;
+  background-color: white;
+  font-family: cursive;
+  &__main{
+    height: 38px;
+    &-left{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      img{
+        width: 100px;
+        height: 38px;
+        object-fit: cover;
+      }
+    }
+    &-right{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      ul{
+        list-style: none;
+        margin: 0;
+        li{
+          display: inline-block;
+          font-size: 15px;
+          padding: 0px 15px;
+          cursor: pointer;
+          img{
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+          .icon-image{
+            position: relative;
+            .notification{
+              position: absolute;
+              top: -2px;
+              right: 0px;
+              background-color: rgb(209, 7, 7);
+              font-size: 11px;
+              color: white;
+              border-radius: 50%;
+              width: 20px;
+              text-align: center;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.filter{
+  font-family: cursive;
+  margin-top: 70px;
+  padding: 50px 0px;
+  &__search{
+    height: 35px;
+    width: 300px;
+    border-radius: 10px;
+  }
+  &__button{
+    margin-left: 20px;
+  }
+  &__modal{
+    font-family: cursive;
+  }
+}
+
+.main-homepage{
+  font-family: cursive;
+  padding: 0px 50px;
+  &__list-title{
+    color: rgb(165, 42, 42);
+  }
+  &__list-member{
+    .card{
+      padding: 20px 20px;
+      &__content{
+        position: relative;
+        border: 1px solid rgb(173, 173, 173);
+        background-color: rgb(252, 252, 252);
+        text-align: center;
+        height: 390px;
+        border-radius: 10px;
+        &-img{
+          width: 100%;
+          height: 300px;
+          object-fit: cover;
+          border-radius: 10px;
+        }
+        &-name{
+          color: rgb(165, 42, 42);
+        }
+        &-info{
+          text-align: start;
+          padding-left: 10px;
+          height: 22px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        &-subject{
+          padding-left: 10px;
+          text-align: start;
+          height: 22px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}

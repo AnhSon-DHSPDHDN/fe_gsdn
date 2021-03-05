@@ -1,0 +1,27 @@
+#contact{
+  margin-top: 50px;
+  text-align: center;
+  font-family: cursive;
+  .contact__content-form{
+    padding-right: 70px;
+  }
+  .contact__content-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 70px;
+  }
+  .contact__footer{
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 50px;
+    background-color: rgb(58, 57, 63);
+    color: white;
+    padding: 0 60px;
+    h2{
+      color: black;
+    }
+    &-list{
+      text-align: start;
+    }
+  }
+}
