@@ -159,37 +159,6 @@ export default function Register() {
               >
                 <Input />
               </Form.Item>
-
-              <Form.Item
-                name="address"
-                label="Address"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your Address!',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-
-              <Form.Item
-                name="phone"
-                label="Phone Number"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your phone number!',
-                  },
-                ]}
-              >
-                <Input
-                  addonBefore={prefixSelector}
-                  style={{
-                    width: '100%',
-                  }}
-                />
-              </Form.Item>
               <Form.Item {...tailFormItemLayout}>
                 <Button type="primary" htmlType="submit">
                   Register

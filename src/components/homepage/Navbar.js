@@ -31,12 +31,12 @@ export default function Navbar() {
           <Row>
             <ul>
               <li><img src={VN} style={{ borderRadius: '0%', width: '50px' }}></img></li>
-              <li><Link to="/">Trang cá nhân</Link></li>
-              <li><Link to="/">Thuê gia sư</Link></li>
-              <li><div className="icon-image">
+              <li><Link to="/home/me">Trang cá nhân</Link></li>
+              <li><Link to="/home">Thuê gia sư</Link></li>
+              <li><Link to="/home/messenger"><div className="icon-image">
                 <img src={MessageOutlined}></img>
                 <div className="notification">12</div>
-              </div></li>
+              </div></Link></li>
               <li><img src={Avatar}></img></li>
               <li><Button type="primary">Đăng xuất</Button></li>
             </ul>

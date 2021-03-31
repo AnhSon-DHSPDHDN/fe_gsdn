@@ -1,0 +1,62 @@
+.personal{
+  margin-top: 70px;
+  padding: 0 15%;
+  font-family: cursive;
+  position: relative;
+  height: 100vh;
+  &__container{
+    padding-top: 20px;
+    .left{
+      &__avatar{
+        background-color: white;
+        text-align: center;
+        padding: 20px 0;
+        border-radius: 10px;
+        height: 400px;
+        img{
+          width: 270px;
+          height: 270px;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+        h2{
+          color: rgb(122, 18, 18);
+          margin-top: 20px;
+        }
+      }
+    }
+    .right{
+      width: 100%;
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px 30px !important;
+      h2{
+        color: rgb(122, 18, 18);
+        text-align: center;
+      }
+      &__content{
+        ul{
+          list-style: none;
+        }
+        p,b{
+          display: inline;
+          margin-left: 10px;
+        }
+        &-update{
+          position: absolute;
+          right: 50px;
+        }
+      }
+    }
+  }
+}
+.update-info{
+  ul{
+    list-style: none;
+    padding: 0;
+  }
+  input,b{
+    display: inline;
+    margin-left: 10px;
+  }
+}

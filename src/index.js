@@ -15,7 +15,12 @@ import reportWebVitals from './reportWebVitals';
 
 const mapRoute = () => {
   return AppRouter.map((router, index) => {
-    return <Route key={index} path={router.path} component={router.component} />
+    return <Route
+      key={index}
+      path={router.path}
+      component={router.component}
+      exact={router.exact}
+    />
   })
 }
 
