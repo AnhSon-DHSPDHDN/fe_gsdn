@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'antd';
 import './header.scss';
 import Banner from './Banner';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
@@ -19,7 +20,7 @@ export default function Header() {
             <li><a href="#mission">Sứ mệnh</a></li>
             <li><a href="#member">Đội ngũ</a></li>
             <li><a href="#contact">Liên hệ</a></li>
-            <li className="active"><a>Bắt đầu</a></li>
+            <li className="active"><Link to="/login">Bắt đầu</Link></li>
           </ul>
         </Col>
       </Row>

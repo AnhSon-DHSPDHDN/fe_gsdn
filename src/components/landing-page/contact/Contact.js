@@ -1,6 +1,7 @@
 import React from 'react';
 import './contact.scss';
-import { Row, Col, Form, Input, InputNumber, Button } from 'antd'
+import { Row, Col, Form, Input, Button } from 'antd'
+import axiosClient from '../../../untils/axiosClient';
 
 const layout = {
   labelCol: {
@@ -22,8 +23,15 @@ const validateMessages = {
 };
 
 export default function Contact() {
-  const onFinish = (values) => {
-    // console.log(values);
+  const [form] = Form.useForm()
+  const onFinish = async (values) => {
+    await axiosClient.post('/feedbacks', { ...values })
+      .then(res => {
+        alert(res.data.message)
+      }).catch(err => {
+        alert(err)
+      })
+    form.resetFields()
   };
   return (
     <div id="contact">
@@ -33,9 +41,9 @@ export default function Contact() {
           <p>Mọi phản hồi và đóng góp của bạn giúp chúng tôi tiếp tục cải thiện hệ thống. Xin chân thành cảm ơn</p>
         </Col>
         <Col className="contact__content-form" xs={24} sm={24} md={12}>
-          <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+          <Form {...layout} form={form} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
             <Form.Item
-              name={['user', 'name']}
+              name={'name'}
               label="Name"
               rules={[
                 {
@@ -46,7 +54,7 @@ export default function Contact() {
               <Input />
             </Form.Item>
             <Form.Item
-              name={['user', 'email']}
+              name={'email'}
               label="Email"
               rules={[
                 {
@@ -57,7 +65,7 @@ export default function Contact() {
             >
               <Input />
             </Form.Item>
-            <Form.Item name={['user', 'message']} label="Message"
+            <Form.Item name={'message'} label="Message"
               rules={[
                 {
                   required: true

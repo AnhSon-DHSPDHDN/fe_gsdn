@@ -7,7 +7,6 @@ export default function PersonalPage() {
   return (
     <div id="personal">
       <HomePageLayout>
-        <Navbar />
         <Personal />
       </HomePageLayout>
     </div>

@@ -1,13 +1,44 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import axiosClient from '../untils/axiosClient'
 import './login.scss'
+import { Message } from '../configs/config';
+import { InfoMeContext } from '../contexts/context/InfoMe';
+import { TypeContextInfoMe } from '../configs/typeContext'
 
 export default function Login() {
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+  const history = useHistory()
+  const infoMeContext = useContext(InfoMeContext)
+  const onFinish = async (values) => {
+    await axiosClient.post('/login', { ...values })
+      .then(res => {
+        if (res.data.message === Message.TAI_KHOAN_OR_MK_SAI) {
+          alert(Message.TAI_KHOAN_OR_MK_SAI);
+        } else if (res.data.message === Message.DANG_NHAP_THANH_CONG) {
+          localStorage.setItem('access-token', res.data.access_token);
+        } else throw new Error()
+      }).catch(err => {
+        alert(Message.CO_LOI_KHI_DANG_NHAP)
+      })
+    await axiosClient.get('/login/me')
+      .then(async res => {
+        if (res.status === 200) {
+          await infoMeContext.dispatch({
+            type: TypeContextInfoMe.GET_INFO_ME,
+            data: res.data
+          })
+          await localStorage.setItem('me', JSON.stringify(res.data))
+          history.push('/home')
+        } else throw new Error()
+      }).catch(err => {
+        console.log(err);
+      })
   };
+  if (localStorage.getItem('me')) {
+    return <Redirect to="/home" />
+  }
   return (
     <div className="login">
       <Row className="login__form">

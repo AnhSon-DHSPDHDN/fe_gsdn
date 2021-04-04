@@ -11,6 +11,8 @@ import {
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom'
 import './login.scss';
+import axiosClient from '../untils/axiosClient';
+import { Message } from '../configs/config';
 
 const { Option } = Select;
 
@@ -54,7 +56,18 @@ export default function Register() {
   }
 
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
+    axiosClient.post('/users', { ...values })
+      .then(res => {
+        console.log(res.data);
+        if (res.data.message === Message.DANG_KY_THANH_CONG) {
+          alert(Message.DANG_KY_THANH_CONG)
+          history.push('/login')
+        } else if (res.data.message === Message.TAI_KHOAN_TON_TAI) {
+          alert(Message.TAI_KHOAN_TON_TAI)
+        } else throw new Error()
+      }).catch(err => {
+        alert(Message.LOI_SERVER)
+      })
   };
 
   const prefixSelector = (

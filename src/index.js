@@ -1,42 +1,13 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect
-} from 'react-router-dom';
-import { Spin } from 'antd';
-import { AppRouter } from './routers/approuter'
 import './index.css';
 import "animate.css/animate.min.css";
 import 'antd/dist/antd.css';
 import reportWebVitals from './reportWebVitals';
-
-const mapRoute = () => {
-  return AppRouter.map((router, index) => {
-    return <Route
-      key={index}
-      path={router.path}
-      component={router.component}
-      exact={router.exact}
-    />
-  })
-}
+import App from './App';
 
 ReactDOM.render(
-  <Router>
-    <Suspense fallback={
-      <div className="example">
-        <Spin tip="Loading..." />
-      </div>
-    }>
-      <Switch>
-        {mapRoute()}
-        <Redirect from='/' to='/landing-page' />
-      </Switch>
-    </Suspense>
-  </Router>,
+  <App />,
   document.getElementById('root')
 );
 
