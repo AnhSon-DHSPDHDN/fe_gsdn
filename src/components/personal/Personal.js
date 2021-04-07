@@ -1,12 +1,11 @@
 import { Col, Input, Row } from 'antd'
-import { Upload, message, Button, Modal } from 'antd';
-import { HighlightOutlined, UploadOutlined } from '@ant-design/icons';
-import React, { useEffect, useState } from 'react'
+import { Button, Modal } from 'antd';
+import { HighlightOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from 'react'
 
 import './style.scss'
 import { ModeViewProfile } from '../../configs/config';
 import { Form } from 'antd';
-import axiosClient from '../../untils/axiosClient'
 
 const layout = {
   labelCol: {
@@ -33,6 +32,9 @@ export default function Personal(props) {
   const [isMale, setisMale] = useState(false)
   const { mode, data } = props
   const [form] = Form.useForm()
+  const [visibleButton, setVisibleButton] = useState(false)
+  const [avatarFile, setAvatarFile] = useState(null)
+  const refInput = useRef()
 
   const onFinish = async (values) => {
     const customer = {
@@ -53,20 +55,20 @@ export default function Personal(props) {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const propsUpload = {
-    // name: 'file',
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    headers: {
-      authorization: 'authorization-file',
-    },
-    onChange(info) {
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+
+  const handleUpfile = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setAvatarFile(e.target.files[0])
+      setVisibleButton(true)
+    } else {
+      setVisibleButton(false)
+    }
+  }
+  const submitAvatar = () => {
+    props.handleChangAvatar(avatarFile)
+    setVisibleButton(false)
+  }
+
   function onChangeValueCheckbox(e) {
     setIsTeacher(e.target.checked)
   }
@@ -97,10 +99,24 @@ export default function Personal(props) {
             <img src={data?.avatar || JSON.parse(localStorage.getItem('me')).avatar}></img>
             <h2>{data?.fullName}</h2>
             {mode === ModeViewProfile.ORTHER_PROFILE ? null
-              : <Upload {...propsUpload}>
-                <Button icon={<UploadOutlined />}>Upload Avatar</Button>
-              </Upload>
+              : <input
+                style={{ display: 'none' }}
+                type="file"
+                id="input-avatar"
+                name="avatar"
+                onChange={handleUpfile}
+                accept="image/png, image/jpeg"
+                ref={refInput}
+              >
+              </input>
             }
+            <Button onClick={() => refInput.current.click()}>Upload Avatar</Button>
+            {visibleButton ? <Button type="primary"
+              onClick={submitAvatar}
+              style={{ marginLeft: '10px' }}
+            >
+              Lưu Avatar
+            </Button> : null}
           </div>
         </Col>
         <Col span={16} className="right">

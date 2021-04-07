@@ -6,6 +6,7 @@ import { Message, ModeViewProfile } from '../configs/config'
 import axiosClient from '../untils/axiosClient'
 import { InfoMeContext } from '../contexts/context/InfoMe'
 import { TypeContextInfoMe } from '../configs/typeContext'
+import FormData from 'form-data'
 
 export default function PersonalPage(props) {
   const history = useHistory()
@@ -68,6 +69,20 @@ export default function PersonalPage(props) {
       })
   }
 
+  const handleChangAvatar = (file) => {
+    const bodyImage = new FormData()
+    bodyImage.append('avatar', file)
+    axiosClient.post('/customers/upload', bodyImage)
+      .then(res => {
+        if (res.status === 200) {
+          setDataProfile(res.data.customer)
+          fetchNewInfoMe()
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+  }
+
   useEffect(() => {
     fetchDataProfile()
   }, [])
@@ -77,6 +92,7 @@ export default function PersonalPage(props) {
         <Personal mode={modeProfile}
           data={dataProfile}
           updateDataCustomer={updateDataCustomer}
+          handleChangAvatar={handleChangAvatar}
         />
       </HomePageLayout>
     </div>
