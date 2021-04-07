@@ -58,7 +58,6 @@ export default function Register() {
   const onFinish = (values) => {
     axiosClient.post('/users', { ...values })
       .then(res => {
-        console.log(res.data);
         if (res.data.message === Message.DANG_KY_THANH_CONG) {
           alert(Message.DANG_KY_THANH_CONG)
           history.push('/login')

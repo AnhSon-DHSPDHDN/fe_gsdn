@@ -10,3 +10,8 @@ export const Message = {
   CO_LOI_KHI_DANG_NHAP: "CO_LOI_KHI_DANG_NHAP",
   THANH_CONG: "THANH CONG"
 }
+
+export const ModeViewProfile = {
+  ME_PROFILE: 'ME_PROFILE',
+  ORTHER_PROFILE: 'ORTHER_PROFILE'
+}

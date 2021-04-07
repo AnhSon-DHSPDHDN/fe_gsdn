@@ -29,7 +29,6 @@ export default function Login() {
             type: TypeContextInfoMe.GET_INFO_ME,
             data: res.data
           })
-          await localStorage.setItem('me', JSON.stringify(res.data))
           history.push('/home')
         } else throw new Error()
       }).catch(err => {

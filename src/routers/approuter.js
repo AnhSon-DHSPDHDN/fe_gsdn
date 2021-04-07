@@ -32,6 +32,11 @@ export const AppRouter = [
     exact: true
   },
   {
+    path: '/home/profile/:id',
+    component: React.lazy(() => import('../layouts/PersonalPage')),
+    exact: true
+  },
+  {
     path: '/home/messenger',
     component: React.lazy(() => import('../layouts/MessengerLayout')),
     exact: true

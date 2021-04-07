@@ -2,6 +2,7 @@ import React from 'react'
 import { Row, Col } from 'antd';
 import { LikeTwoTone, CrownTwoTone } from '@ant-design/icons'
 import './homepage.scss'
+import { Link } from 'react-router-dom';
 
 export default function Main(props) {
   const { data } = props;
@@ -31,19 +32,21 @@ export default function Main(props) {
         return <Col xs={24} sm={12} md={12} lg={6} className="card"
           key={index}
         >
-          <div className="card__content">
-            <img className="card__content-img" src={data?.avatar}></img>
-            <h3 className="card__content-name">{data?.fullName}</h3>
-            <div className="card__content-info">
-              <CrownTwoTone /> {data?.description}
+          <Link to={`/home/profile/${data?._id}`}>
+            <div className="card__content">
+              <img className="card__content-img" src={data?.avatar}></img>
+              <h3 className="card__content-name">{data?.fullName}</h3>
+              <div className="card__content-info">
+                <CrownTwoTone /> {data?.description}
+              </div>
+              <div className="card__content-subject">
+                <LikeTwoTone /> {data?.subject?.toString()}
+              </div>
+              <div className="card__salary">
+                {data?.salary} VNĐ/Tháng
+              </div>
             </div>
-            <div className="card__content-subject">
-              <LikeTwoTone /> {data?.subject?.toString()}
-            </div>
-            <div className="card__salary">
-              {data?.salary}
-            </div>
-          </div>
+          </Link>
         </Col>
       })
     }

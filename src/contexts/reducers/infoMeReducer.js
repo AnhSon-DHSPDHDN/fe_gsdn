@@ -16,6 +16,7 @@ export const infoMeReducer = (state, action) => {
   switch (action.type) {
     case TypeContextInfoMe.GET_INFO_ME: {
       state = { ...action.data };
+      localStorage.setItem('me', JSON.stringify(state))
       return { ...state }
     }
     case TypeContextInfoMe.CLEAR_INFO_ME: {

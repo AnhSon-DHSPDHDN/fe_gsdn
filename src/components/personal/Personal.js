@@ -1,26 +1,59 @@
 import { Col, Input, Row } from 'antd'
 import { Upload, message, Button, Modal } from 'antd';
 import { HighlightOutlined, UploadOutlined } from '@ant-design/icons';
-import React, { useState } from 'react'
-import Avatar from '../../assets/imgs/avatar.jpg';
+import React, { useEffect, useState } from 'react'
 
 import './style.scss'
+import { ModeViewProfile } from '../../configs/config';
+import { Form } from 'antd';
+import axiosClient from '../../untils/axiosClient'
 
-export default function Personal() {
+const layout = {
+  labelCol: {
+    span: 4,
+  },
+  wrapperCol: {
+    span: 20,
+  },
+};
+const validateMessages = {
+  required: '${label} is required!',
+  types: {
+    email: '${label} is not a valid email!',
+    number: '${label} is not a valid number!',
+  },
+  number: {
+    range: '${label} must be between ${min} and ${max}',
+  },
+};
+
+export default function Personal(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTeacher, setIsTeacher] = useState(false)
+  const [isMale, setisMale] = useState(false)
+  const { mode, data } = props
+  const [form] = Form.useForm()
+
+  const onFinish = async (values) => {
+    const customer = {
+      ...values,
+      isTeacher: isTeacher,
+      sex: isMale,
+      salary: values.salary === undefined ? null : parseInt(values.salary),
+      subject: values.subject.split(',')
+    }
+    await props.updateDataCustomer(customer)
+    form.resetFields()
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-  const props = {
+  const propsUpload = {
     // name: 'file',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     headers: {
@@ -34,57 +67,187 @@ export default function Personal() {
       }
     },
   };
+  function onChangeValueCheckbox(e) {
+    setIsTeacher(e.target.checked)
+  }
+  function onChangeValueSex(e) {
+    setisMale(e.target.checked)
+  }
+
+  useEffect(() => {
+    form.setFieldsValue({
+      "description": data?.description,
+      "fullName": data?.fullName,
+      "age": data?.age,
+      "address": data?.address,
+      "email": data?.email,
+      "education": data?.education,
+      "phone": data?.phone,
+      "experience": data?.experience,
+      "subject": data?.subject.toString(),
+      "salary": data?.salary
+    })
+  }, [form, data])
+
   return (
     <div className="personal homepage">
       <Row gutter={24} className="personal__container">
         <Col span={8} className="left">
           <div className="left__avatar">
-            <img src={Avatar}></img>
-            <h2>Trần Văn Anh Sơn</h2>
-            <Upload {...props}>
-              <Button icon={<UploadOutlined />}>Upload Avatar</Button>
-            </Upload>
+            <img src={data?.avatar || JSON.parse(localStorage.getItem('me')).avatar}></img>
+            <h2>{data?.fullName}</h2>
+            {mode === ModeViewProfile.ORTHER_PROFILE ? null
+              : <Upload {...propsUpload}>
+                <Button icon={<UploadOutlined />}>Upload Avatar</Button>
+              </Upload>
+            }
           </div>
         </Col>
         <Col span={16} className="right">
-          <h2>Thông tin cá nhân</h2>
+          <h2>{data ? 'Thông tin cá nhân' : 'Không có thông tin'}</h2>
           <div className="right__content">
-            <ul>
-              <li><HighlightOutlined /><p>Đừng dừng lại khi mệt mỏi, chỉ dừng lại khi đã xong. Là một con người, ắt hẳn có đôi lúc bạn sẽ cảm thấy mệt mỏi, thậm chí muốn bỏ cuộc. Đặc biệt là khi mọi việc diễn ra không tốt đẹp. Và những gì giúp bạn thành công chỉ có thể là kiên trì.</p></li>
-              <li><HighlightOutlined /><b>Tên:</b> <p>Trần Văn Anh Sơn</p></li>
-              <li><HighlightOutlined /><b>Tuổi:</b> <p>22</p></li>
-              <li><HighlightOutlined /><b>Địa chỉ:</b> <p>Hướng Hóa - Quảng Trị</p></li>
-              <li><HighlightOutlined /><b>Email:</b> <p>anhson2121999@gmail.com</p></li>
-              <li><HighlightOutlined /><b>Học vấn:</b> <p>Cử nhân CNTT - ĐHSP - ĐHĐN</p></li>
-              <li><HighlightOutlined /><b>SĐT:</b> <p>0334965080</p></li>
-              <li><HighlightOutlined /><b>Kinh nghiệm:</b> <p>1 year+ Dev parttime Acexis company, 2 month QC Leader</p></li>
-              <li><HighlightOutlined /><b>Môn dạy:</b> <p>Toán, Lý, Hóa, Sinh, Văn, Sử, Địa</p></li>
-              <li><HighlightOutlined /><b>Là gia sư:</b> <p>True</p></li>
-            </ul>
+            {data ?
+              <ul>
+                <li><HighlightOutlined /><p>{data?.description}</p></li>
+                <li><HighlightOutlined /><b>Tên:</b> <p>{data?.fullName}</p></li>
+                <li><HighlightOutlined /><b>Tuổi:</b> <p>{data?.age}</p></li>
+                <li><HighlightOutlined /><b>Địa chỉ:</b> <p>{data?.address}</p></li>
+                <li><HighlightOutlined /><b>Email:</b> <p>{data?.email}</p></li>
+                <li><HighlightOutlined /><b>Học vấn:</b> <p>{data?.education}</p></li>
+                <li><HighlightOutlined /><b>SĐT:</b> <p>{data?.phone}</p></li>
+                <li><HighlightOutlined /><b>Kinh nghiệm:</b> <p>{data?.experience}</p></li>
+                <li><HighlightOutlined /><b>Môn dạy:</b> <p>{data?.subject.toString()}</p></li>
+                <li><HighlightOutlined /><b>Giới tính:</b> <p>{data?.sex ? 'Nam' : 'Nữ'}</p></li>
+                <li><HighlightOutlined /><b>{data?.isTeacher ? 'Là gia sư!' : 'Không phải gia sư!'}</b></li>
+                {data?.salary ?
+                  <li><HighlightOutlined /><b>Mức lương mong muốn:</b> <p>{data?.salary}</p></li>
+                  : null
+                }
+              </ul>
+              : null
+            }
             <div className="right__content-update">
-              <Button type="primary" onClick={showModal}>Update</Button>
+              {mode === ModeViewProfile.ORTHER_PROFILE ? null
+                : <Button type="primary" onClick={showModal}>Update</Button>
+              }
             </div>
           </div>
         </Col>
       </Row>
       <Modal title="Cập nhật thông tin cá nhân"
         visible={isModalVisible}
-        onOk={handleOk}
         onCancel={handleCancel}
+        forceRender
+        footer={[
+          <Button type="primary" onClick={handleCancel} htmlType="submit" key={1}>
+            Cancel
+          </Button>
+        ]}
       >
         <div className="update-info">
-          <ul>
-            <li><HighlightOutlined /><b>Mô tả:</b> <Input.TextArea type="text"></Input.TextArea></li>
-            <li><HighlightOutlined /><b>Tên:</b> <Input type="text"></Input> </li>
-            <li><HighlightOutlined /><b>Tuổi:</b> <Input type="text"></Input> </li>
-            <li><HighlightOutlined /><b>Địa chỉ:</b> <Input type="text"></Input> </li>
-            <li><HighlightOutlined /><b>Email:</b> <Input type="text"></Input> </li>
-            <li><HighlightOutlined /><b>Học vấn:</b> <Input type="text"></Input> </li>
-            <li><HighlightOutlined /><b>SĐT:</b> <Input type="text"></Input> </li>
-            <li><HighlightOutlined /><b>Kinh nghiệm:</b> <Input type="text"></Input> </li>
-            <li><HighlightOutlined /><b>Môn dạy:</b> <Input type="text"></Input> </li>
-            <li><HighlightOutlined /><b>Là gia sư:</b> <Input type="text"></Input></li>
-          </ul>
+          <Form {...layout} form={form} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
+            <Form.Item
+              name={'description'}
+              label="Mô tả"
+              rules={[
+                {
+                  required: true,
+                },
+              ]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item
+              name={'fullName'}
+              label="Tên"
+              rules={[
+                {
+                  required: true
+                },
+              ]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item name={'age'} label="Tuổi"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input type="number" min={0} max={100} style={{ marginLeft: "0px" }} />
+            </Form.Item>
+            <Form.Item name={'address'} label="Địa chỉ"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item name={'email'} label="Email"
+              rules={[
+                {
+                  type: 'email',
+                  required: true
+                }
+              ]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item name={'education'} label="Học vấn"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item name={'phone'} label="SĐT"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item name={'experience'} label="Kinh nghiệm"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input.TextArea />
+            </Form.Item>
+            <Form.Item name={'subject'} label="Môn dạy"
+              rules={[
+                {
+                  required: true
+                }
+              ]}
+            >
+              <Input.TextArea placeholder="Cách nhau bởi dấu ','" />
+            </Form.Item>
+            <Form.Item name={'isTeacher'} label="Là gia sư?">
+              <Input type="checkbox" onChange={onChangeValueCheckbox} />
+            </Form.Item>
+            <Form.Item name={'sex'} label="Là Nam?">
+              <Input type="checkbox" onChange={onChangeValueSex} />
+            </Form.Item>
+            <Form.Item name={'salary'} label="Mức lương"
+            >
+              <Input disabled={!isTeacher} type="number" />
+            </Form.Item>
+            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
       </Modal>
     </div>

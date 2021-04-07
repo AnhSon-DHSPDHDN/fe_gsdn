@@ -29,7 +29,9 @@ export default function Navbar() {
         <div className="navbar__main-left">
           <Row>
             <Col span={10}>
-              <img src={Logo}></img>
+              <Link to="/home">
+                <img src={Logo}></img>
+              </Link>
             </Col>
             <Col span={14}>
               <Input.Search
