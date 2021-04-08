@@ -40,5 +40,10 @@ export const AppRouter = [
     path: '/home/messenger',
     component: React.lazy(() => import('../layouts/MessengerLayout')),
     exact: true
+  },
+  {
+    path: '/home/news',
+    component: React.lazy(() => import('../layouts/News')),
+    exact: true
   }
 ];

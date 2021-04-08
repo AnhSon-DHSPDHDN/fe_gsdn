@@ -1,0 +1,50 @@
+.news{
+  margin-top: 70px;
+  height: 100vh;
+  padding: 0 20%;
+  font-family: cursive;
+  position: relative;
+  width: 100%;
+  &-container{
+    background-color: white;
+    position: relative;
+    width: 100%;
+    margin: 20px 0px;
+    padding: 15px;
+    border-radius: 15px;
+    height: 94vh;
+    overflow: hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar{
+      display: none;
+    }
+    .news-item{
+      height: 180px;
+      img{
+        width: 90%;
+        height: 180px;
+        object-fit: cover;
+      }
+      &__content{
+        height: 180px;
+        &-title{
+          font-size: 18px;
+          height: 60px;
+          display: -webkit-box;
+          -webkit-line-clamp: 2; /* after 3 line show ... */
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        &-main{
+          display: -webkit-box;
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
+          height: 110px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}

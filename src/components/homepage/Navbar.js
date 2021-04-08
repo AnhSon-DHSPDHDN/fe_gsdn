@@ -48,6 +48,7 @@ export default function Navbar() {
               <li><img src={VN} style={{ borderRadius: '0%', width: '50px' }}></img></li>
               <li><Link to="/home/me">Trang cá nhân</Link></li>
               <li><Link to="/home">Thuê gia sư</Link></li>
+              <li><Link to="/home/news">Bảng tin</Link></li>
               <li><Link to="/home/messenger"><div className="icon-image">
                 <img src={MessageOutlined}></img>
                 <div className="notification">12</div>
