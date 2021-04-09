@@ -7,6 +7,31 @@ export const AppRouter = [
     exact: true
   },
   {
+    path: '/admin/teacher',
+    component: React.lazy(() => import('../components/admins/TeacherAdmin')),
+    exact: true
+  },
+  {
+    path: '/admin/customer',
+    component: React.lazy(() => import('../components/admins/CustomerAdmin')),
+    exact: true
+  },
+  {
+    path: '/admin/news',
+    component: React.lazy(() => import('../components/admins/NewsAdmin')),
+    exact: true
+  },
+  {
+    path: '/admin/users',
+    component: React.lazy(() => import('../components/admins/UserAdmin')),
+    exact: true
+  },
+  {
+    path: '/admin/developer',
+    component: React.lazy(() => import('../components/admins/DeveloperAdmin')),
+    exact: true
+  },
+  {
     path: '/landing-page',
     component: React.lazy(() => import('../layouts/App')),
     exact: true
