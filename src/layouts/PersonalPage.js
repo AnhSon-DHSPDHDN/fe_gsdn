@@ -12,7 +12,6 @@ export default function PersonalPage(props) {
   const history = useHistory()
   const [dataProfile, setDataProfile] = useState(null)
   const infoMeContext = useContext(InfoMeContext)
-
   let modeProfile = ModeViewProfile.ME_PROFILE;
   if (history.location.pathname.includes('/me')) {
     modeProfile = ModeViewProfile.ME_PROFILE
@@ -85,7 +84,7 @@ export default function PersonalPage(props) {
 
   useEffect(() => {
     fetchDataProfile()
-  }, [])
+  }, [history.location.pathname])
   return (
     <div id="personal">
       <HomePageLayout>

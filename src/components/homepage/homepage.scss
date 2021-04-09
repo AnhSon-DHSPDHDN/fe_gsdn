@@ -19,6 +19,17 @@
         height: 38px;
         object-fit: cover;
       }
+      .dropdown-container{
+        position: fixed;
+        width: 230px;
+        height: 200px;
+        background-color: white;
+        overflow: hidden;
+        overflow-y: scroll;
+        &::-webkit-scrollbar{
+          display: none;
+        }
+      }
     }
     &-right{
       display: flex;

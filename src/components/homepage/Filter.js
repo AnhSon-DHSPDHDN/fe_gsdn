@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { Row, Button, Modal, Checkbox } from 'antd';
 import './homepage.scss';
 
-export default function Filter() {
+export default function Filter(props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchTeacher, setSearchTeacher] = useState('')
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -16,12 +17,27 @@ export default function Filter() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  const handleChangeInput = (e) => {
+    setSearchTeacher(e.target.value)
+  }
+  const handleSubmitSearch = () => {
+    props.handleSearchTeacher(searchTeacher)
+  }
   return (
     <div className="filter">
       <Row justify="center">
-        <input type="text" placeholder="Nhập tên gia sư..." className="filter__search"></input>
+        <input
+          type="text"
+          placeholder="Nhập tên gia sư..."
+          className="filter__search"
+          onChange={handleChangeInput}
+        ></input>
         <Button danger className="filter__button" onClick={showModal} >Bộ lọc</Button>
-        <Button type="primary" className="filter__button">Tìm kiếm</Button>
+        <Button type="primary"
+          className="filter__button"
+          onClick={handleSubmitSearch}
+        >Tìm kiếm</Button>
         <Modal className="filter__modal" title="Bộ lọc"
           visible={isModalVisible}
           onOk={handleOk}

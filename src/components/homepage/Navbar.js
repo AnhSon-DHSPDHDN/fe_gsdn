@@ -1,19 +1,66 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Row, Col, Button } from 'antd';
 import './homepage.scss';
 import Logo from '../../assets/imgs/logoText.png'
 import VN from '../../assets/imgs/VN.png'
-import Avatar from '../../assets/imgs/avatar.jpg'
 import { Input } from 'antd'
 import { Link, useHistory } from 'react-router-dom'
 import MessageOutlined from '../../assets/imgs/messageImage.png';
 import { InfoMeContext } from '../../contexts/context/InfoMe'
 import { TypeContextInfoMe } from '../../configs/typeContext';
+import { List, Avatar } from 'antd';
+import axiosClient from '../../untils/axiosClient';
 
 export default function Navbar() {
   const history = useHistory()
   const infoMeContext = useContext(InfoMeContext)
-  const onSearch = value => console.log(value);
+  const [searchValue, setSearchValue] = useState('')
+  const [dataCustomer, setDataCustomer] = useState([])
+  const [visibleDropdown, setVisibleDropdown] = useState(false)
+  const typingTimeoutRef = useRef(null)
+  const dropdownRef = useRef(null)
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value
+    setSearchValue(value)
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current)
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      onSearch(value)
+    }, 500)
+  }
+
+  const onSearch = value => {
+    axiosClient.get('/customers', {
+      params: {
+        fullName: value
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        setDataCustomer(res.data?.data)
+        setVisibleDropdown(true)
+      } else throw new Error()
+    }).catch(err => {
+      console.log(err);
+    })
+  };
+
+  const handleClickOutSide = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setVisibleDropdown(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutSide);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutSide)
+    }
+  }, [])
+
   const onLogout = () => {
     localStorage.removeItem('access-token');
     localStorage.removeItem('me');
@@ -37,8 +84,24 @@ export default function Navbar() {
               <Input.Search
                 placeholder="Tìm kiếm..."
                 allowClear
-                onSearch={onSearch}
+                onChange={handleSearchChange}
               />
+              {visibleDropdown ? <div ref={dropdownRef} className="dropdown-container">
+                <List
+                  itemLayout="horizontal"
+                  dataSource={dataCustomer}
+                  renderItem={item => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={<Avatar src={item?.avatar} />}
+                        title={<Link to={`/home/profile/${item?._id}`}>{item?.fullName}</Link>}
+                      />
+                    </List.Item>
+                  )}
+                ></List>
+              </div>
+                : null
+              }
             </Col>
           </Row>
         </div>

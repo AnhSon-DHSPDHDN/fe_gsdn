@@ -20,10 +20,23 @@ export default function Home() {
   useEffect(() => {
     fetchDataTeacher()
   }, [])
+  const handleSearchTeacher = (param) => {
+    axiosClient.get('/teachers', {
+      params: {
+        fullName: param
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        setDataTeacher(res.data.data)
+      } else throw new Error()
+    }).catch(err => {
+      console.log(err);
+    })
+  }
   return (
     <div className="homepage">
       <HomePageLayout>
-        <Filter />
+        <Filter handleSearchTeacher={handleSearchTeacher} />
         <Main data={dataTeacher} />
       </HomePageLayout>
     </div>
