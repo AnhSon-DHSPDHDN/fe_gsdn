@@ -51,12 +51,15 @@ export default function NewsAdmin() {
   const [dataNews, setDataNews] = useState([])
   const [rowSelects, setRowSelects] = useState([]);
   const modalRef = useRef(null);
+  const [rowKeysSelect, setRowKeysSelect] = useState([]);
 
   useEffect(() => {
     fetchDataNew()
   }, []);
 
   const fetchDataNew = () => {
+    setRowKeysSelect([])
+    setRowSelects([])
     axiosClient.get('/news')
       .then(res => {
         if (res.status === 200) {
@@ -68,9 +71,11 @@ export default function NewsAdmin() {
   }
 
   const rowSelection = {
+    selectedRowKeys: rowKeysSelect,
     onChange: (selectedRowKeys, selectedRows) => {
       // console.log(selectedRows);
       setRowSelects(selectedRows)
+      setRowKeysSelect(selectedRowKeys)
     },
     getCheckboxProps: (record) => ({
       disabled: record.name === 'Disabled User', // Column configuration not to be checked

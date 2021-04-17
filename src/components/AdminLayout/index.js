@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Layout, Menu } from 'antd';
 import {
   DesktopOutlined,
@@ -7,11 +7,14 @@ import {
 } from '@ant-design/icons';
 import { Link, Redirect } from 'react-router-dom';
 import axiosClient from '../../untils/axiosClient';
+import { InfoMeContext } from '../../contexts/context/InfoMe';
+import { TypeContextInfoMe } from '../../configs/typeContext';
 
 const { Header, Content, Footer, Sider } = Layout;
 
 function Admin({ children }) {
-  const [collapsed, setCollapsed] = useState(false);
+    const { data, dispatch } = useContext(InfoMeContext)
+    const [collapsed, setCollapsed] = useState(false);
   const [userAuthor, setUserAuthor] = useState(null)
   const onCollapse = () => {
     setCollapsed(!collapsed)
@@ -21,6 +24,10 @@ function Admin({ children }) {
       .then(res => {
         if (res.status === 200) {
           setUserAuthor(res.data)
+          dispatch({
+            type: TypeContextInfoMe.GET_INFO_ME,
+            data: res.data
+          });
         } else throw new Error()
       }).catch(error => {
         console.log(error);
