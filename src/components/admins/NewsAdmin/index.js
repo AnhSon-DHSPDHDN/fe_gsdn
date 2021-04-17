@@ -2,7 +2,6 @@ import { Button, Col, notification, Row, Space, Table } from 'antd'
 import React, { useEffect, useState, useRef } from 'react'
 import axiosClient from '../../../untils/axiosClient';
 import AdminLayout from '../../AdminLayout'
-import { DataGrid, GridRowsProp, GridColDef } from '@material-ui/data-grid';
 import * as moment from "moment";
 import './style.scss'
 import ModalCRUD from './modalCRUD';
