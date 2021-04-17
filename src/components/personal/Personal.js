@@ -110,13 +110,16 @@ export default function Personal(props) {
               >
               </input>
             }
-            <Button onClick={() => refInput.current.click()}>Upload Avatar</Button>
+            {
+              mode === ModeViewProfile.ORTHER_PROFILE ? null
+                : <Button onClick={() => refInput.current.click()}>Upload Avatar</Button>
+            }
             {visibleButton ? <Button type="primary"
               onClick={submitAvatar}
               style={{ marginLeft: '10px' }}
             >
               Lưu Avatar
-            </Button> : null}
+              </Button> : null}
           </div>
         </Col>
         <Col span={16} className="right">

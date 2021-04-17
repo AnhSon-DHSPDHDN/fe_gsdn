@@ -1,10 +1,13 @@
+import { Row } from 'antd'
 import React from 'react'
 import AdminLayout from '../../AdminLayout'
 
 export default function TeacherAdmin() {
   return (
     <AdminLayout>
-      <div>TeacherAdmin</div>
+      <Row>
+        <h2>Teacher</h2>
+      </Row>
     </AdminLayout>
   )
 }
