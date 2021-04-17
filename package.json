@@ -12,6 +12,7 @@
     "axios": "^0.21.1",
     "form-data": "^4.0.0",
     "history": "^5.0.0",
+    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-animate-on-scroll": "^2.1.5",
     "react-dom": "^17.0.1",
