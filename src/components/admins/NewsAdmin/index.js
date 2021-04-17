@@ -8,7 +8,6 @@ import ModalCRUD from './modalCRUD';
 import confirm from 'antd/lib/modal/confirm';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
-
 const columns = [
   {
     title: "No.",
@@ -70,7 +69,7 @@ export default function NewsAdmin() {
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(selectedRows);
+      // console.log(selectedRows);
       setRowSelects(selectedRows)
     },
     getCheckboxProps: (record) => ({
@@ -100,7 +99,7 @@ export default function NewsAdmin() {
 
   const deleteRows = () => {
     const ids = rowSelects.map(r => r._id);
-    console.log(ids);
+    // console.log(ids);
     axiosClient.delete('/news', {
       data: { ids }
     }).then(() => {
@@ -109,7 +108,7 @@ export default function NewsAdmin() {
       })
       fetchDataNew();
     }).catch(() => {
-      console.log("Error nef");
+      // console.log("Error nef");
       notification.error({
         message: "Có lỗi khi xóa"
       })
@@ -118,11 +117,10 @@ export default function NewsAdmin() {
 
   const onEdit = () => {
     if (rowSelects.length != 1) return;
-    console.log(rowSelects);
+    // console.log(rowSelects);
     modalRef.current?.handleOpen(rowSelects[0]);
   }
-  console.log(rowSelects);
-
+  // console.log(rowSelects);
 
   return (
     <AdminLayout>
