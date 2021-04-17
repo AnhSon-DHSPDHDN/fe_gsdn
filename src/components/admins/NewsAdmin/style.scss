@@ -8,5 +8,15 @@
     margin-top: 20px;
     background-color: white;
     text-align: center;
+    .row-table{
+      img{
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
+      }
+      td{
+        border-bottom: 1px solid black;
+      }
+    }
   }
 }
