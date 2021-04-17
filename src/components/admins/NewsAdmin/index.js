@@ -2,7 +2,6 @@ import { Button, Col, notification, Row, Space, Table } from 'antd'
 import React, { useEffect, useState, useRef } from 'react'
 import axiosClient from '../../../untils/axiosClient';
 import AdminLayout from '../../AdminLayout'
-import { DataGrid, GridRowsProp, GridColDef } from '@material-ui/data-grid';
 import * as moment from "moment";
 import './style.scss'
 import ModalCRUD from './modalCRUD';
@@ -53,12 +52,15 @@ export default function NewsAdmin() {
   const [dataNews, setDataNews] = useState([])
   const [rowSelects, setRowSelects] = useState([]);
   const modalRef = useRef(null);
+  const [rowKeysSelect, setRowKeysSelect] = useState([]);
 
   useEffect(() => {
     fetchDataNew()
   }, []);
 
   const fetchDataNew = () => {
+    setRowKeysSelect([])
+    setRowSelects([])
     axiosClient.get('/news')
       .then(res => {
         if (res.status === 200) {
@@ -70,9 +72,11 @@ export default function NewsAdmin() {
   }
 
   const rowSelection = {
+    selectedRowKeys: rowKeysSelect,
     onChange: (selectedRowKeys, selectedRows) => {
       console.log(selectedRows);
       setRowSelects(selectedRows)
+      setRowKeysSelect(selectedRowKeys)
     },
     getCheckboxProps: (record) => ({
       disabled: record.name === 'Disabled User', // Column configuration not to be checked
