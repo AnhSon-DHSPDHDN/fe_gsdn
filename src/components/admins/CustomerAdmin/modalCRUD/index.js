@@ -4,118 +4,196 @@ import React, { forwardRef, useEffect, useImperativeHandle, useState } from "rea
 import axiosClient from '../../../../untils/axiosClient';
 
 const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-  };
-  const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 },
-  };
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
 
 const ModalCRUD = forwardRef(({
-    reload
+  reload
 }, ref) => {
 
 
-    const [visible, setVisible] = useState(false);
-    const [form] = useForm();
-    const [rowSelection, setRowSelection] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [form] = useForm();
+  const [rowSelection, setRowSelection] = useState(null);
+  const [isTeacher, setIsTeacher] = useState(false)
+  const [isMale, setisMale] = useState(false)
 
-    useImperativeHandle(ref, () => ({
-        handleOpen
-    }))
+  function onChangeValueCheckbox(e) {
+    setIsTeacher(e.target.checked)
+  }
+  function onChangeValueSex(e) {
+    setisMale(e.target.checked)
+  }
 
-    useEffect(() => {
-        if (!rowSelection) return;
-        console.log(rowSelection);
-        form.setFieldsValue(rowSelection);
-    }, [rowSelection])
+  useImperativeHandle(ref, () => ({
+    handleOpen
+  }))
 
-    const handleOpen = row => {
-        console.log(row);
-        if (row) setRowSelection(row)
-        else setRowSelection(null);
-        setVisible(true);
-    }
+  useEffect(() => {
+    if (!rowSelection) return;
+    form.setFieldsValue(rowSelection);
+  }, [rowSelection])
 
-    const handleClose = () => {
-        setVisible(false);
-        setRowSelection(null);
-        form.resetFields()
-    }
+  const handleOpen = row => {
+    if (row) setRowSelection(row)
+    else setRowSelection(null);
+    setVisible(true);
+  }
 
-    const handleSubmit = () => {
-        form.submit();
-    }
+  const handleClose = () => {
+    setVisible(false);
+    setRowSelection(null);
+    form.resetFields()
+  }
 
-    const handleFinish = values => {
-        console.log(values);
-        axiosClient({
-            url: `/news/${rowSelection?._id || ""}`,
-            method: rowSelection ? "PUT" : "POST",
-            data: values
-        }).then(() => {
-            handleClose()
-            notification.success({
-                message: `${rowSelection ? "Cập nhật" : "Thêm mới"} thành công`
-            })
-            reload && reload();
-            form.resetFields();
-        }).catch(() => {
-            console.log("Error nef");
-            notification.error({
-                message: `${rowSelection ? "Cập nhật" : "Thêm mới"} thất bại`
-            })
-        });
-    }
+  const handleSubmit = () => {
+    form.submit();
+  }
 
-    return (
-        <Modal
-            visible={visible}
-            onOk={handleSubmit}
-            onCancel={handleClose}
-            okText="Lưu"
-            cancelText="Đóng"
-            title={rowSelection?.title || "Thêm mới bài viết"}
-            width="1000px"
+  const handleFinish = values => {
+    const id = rowSelection?._id
+    axiosClient.put(`/customers/${id}`, {
+      ...values,
+      isTeacher: isTeacher,
+      sex: isMale
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          handleClose()
+          notification.success({
+            message: `Cập nhật thành công`
+          })
+          reload && reload();
+          form.resetFields();
+        }
+      }).catch(err => {
+        console.log("Error nef");
+        notification.error({
+          message: `Cập nhật thất bại`
+        })
+      })
+  }
+
+  return (
+    <Modal
+      visible={visible}
+      onOk={handleSubmit}
+      onCancel={handleClose}
+      okText="Lưu"
+      cancelText="Đóng"
+      title={rowSelection?.title || "Chỉnh sửa thông tin người dùng"}
+      width="1000px"
+    >
+      <Form
+        {...layout}
+        name="basic"
+        // initialValues={{ remember: true }}
+        onFinish={handleFinish}
+        form={form}
+      >
+        <Form.Item
+          name={'description'}
+          label="Mô tả"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
         >
-            <Form
-                {...layout}
-                name="basic"
-                // initialValues={{ remember: true }}
-                onFinish={handleFinish}
-                form={form}
-            >
-                <Form.Item
-                    label="Tiêu đề"
-                    name="title"
-                    rules={[{ required: true, message: 'Vui lòng nhập tiêu đề!' }]}
-                >
-                    <Input placeholder="Nhập tiêu đề" />
-                </Form.Item>
-                <Form.Item
-                    label="Đường dẫn bài viết"
-                    name="link"
-                    rules={[{ required: true, message: 'Vui lòng nhập đường dẫn bài viết!' }]}
-                >
-                    <Input placeholder="Nhập đường dẫn bài viết" />
-                </Form.Item>
-                <Form.Item
-                    label="Đường dẫn hình ảnh"
-                    name="image"
-                    rules={[{ required: true, message: 'Vui lòng nhập đường dẫ n hình ảnh!' }]}
-                >
-                    <Input placeholder="Nhập đường dẫn hình ảnh" />
-                </Form.Item>
-                <Form.Item
-                    label="Mô tả"
-                    name="description"
-                    rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
-                >
-                    <Input.TextArea placeholder="Nhập mô tả" cols={10} />
-                </Form.Item>
-            </Form>
-        </Modal>
-    )
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item
+          name={'fullName'}
+          label="Tên"
+          rules={[
+            {
+              required: true
+            },
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item name={'age'} label="Tuổi"
+          rules={[
+            {
+              required: true
+            }
+          ]}
+        >
+          <Input type="number" min={0} max={100} style={{ marginLeft: "0px" }} />
+        </Form.Item>
+        <Form.Item name={'address'} label="Địa chỉ"
+          rules={[
+            {
+              required: true
+            }
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item name={'email'} label="Email"
+          rules={[
+            {
+              type: 'email',
+              required: true
+            }
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item name={'education'} label="Học vấn"
+          rules={[
+            {
+              required: true
+            }
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item name={'phone'} label="SĐT"
+          rules={[
+            {
+              required: true
+            }
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item name={'experience'} label="Kinh nghiệm"
+          rules={[
+            {
+              required: true
+            }
+          ]}
+        >
+          <Input.TextArea />
+        </Form.Item>
+        <Form.Item name={'subject'} label="Môn dạy"
+          rules={[
+            {
+              required: true
+            }
+          ]}
+        >
+          <Input.TextArea placeholder="Cách nhau bởi dấu ','" />
+        </Form.Item>
+        <Form.Item name={'isTeacher'} label="Là gia sư?">
+          <Input type="checkbox" onChange={onChangeValueCheckbox} />
+        </Form.Item>
+        <Form.Item name={'sex'} label="Là Nam?">
+          <Input type="checkbox" onChange={onChangeValueSex} />
+        </Form.Item>
+        <Form.Item name={'salary'} label="Mức lương"
+        >
+          <Input disabled={!isTeacher} type="number" />
+        </Form.Item>
+      </Form>
+    </Modal>
+  )
 
 })
 

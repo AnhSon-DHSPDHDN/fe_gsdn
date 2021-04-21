@@ -41,7 +41,7 @@ const columns = [
     dataIndex: 'createdAt',
     key: 'createdAt',
     render: value => moment(value).format("DD-MM-YYYY"),
-    width: '8%',
+    width: '15%',
   },
 ]
 
@@ -74,7 +74,7 @@ export default function NewsAdmin() {
       setRowKeysSelect(selectedRowKeys)
     },
     getCheckboxProps: (record) => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      disabled: record.name === 'Disabled User',
       name: record.name,
     }),
   };
@@ -123,7 +123,7 @@ export default function NewsAdmin() {
   return (
     <AdminLayout>
       <div className="container">
-        <h1 className="title">Quản lý người dùng</h1>
+        <h1 className="title">Quản lý tài khoản</h1>
         <Row justify="space-between" >
           <Col span="6">
             <Button type="primary" onClick={onOpenModal} >Thêm</Button>

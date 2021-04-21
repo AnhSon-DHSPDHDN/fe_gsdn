@@ -32,16 +32,10 @@ const columns = [
     width: '10%',
   },
   {
-    title: "Môn dạy",
-    dataIndex: 'subject',
-    key: 'subject',
-    width: '10%',
-  },
-  {
-    title: "Mức lương",
-    dataIndex: 'salary',
-    key: 'salary',
-    width: '10%',
+    title: "Địa chỉ",
+    dataIndex: 'address',
+    key: 'address',
+    width: '15%',
   },
   {
     title: "Mô tả",
@@ -54,13 +48,14 @@ const columns = [
     dataIndex: 'createdAt',
     key: 'createdAt',
     render: value => moment(value).format("DD-MM-YYYY"),
-    width: '8%',
+    width: '13%',
   },
 ]
 
 export default function CustomerAdmin() {
   const [dataCustomer, setDataCustomer] = useState([])
   const [rowSelects, setRowSelects] = useState([]);
+  const [rowKeysSelect, setRowKeysSelect] = useState([]);
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -68,6 +63,8 @@ export default function CustomerAdmin() {
   }, []);
 
   const fetchDataCustomer = () => {
+    setRowSelects([]);
+    setRowKeysSelect([])
     axiosClient.get('/customers')
       .then(res => {
         if (res.status === 200) {
@@ -79,8 +76,10 @@ export default function CustomerAdmin() {
   }
 
   const rowSelection = {
+    selectedRowKeys: rowKeysSelect,
     onChange: (selectedRowKeys, selectedRows) => {
-      setRowSelects(selectedRows)
+      setRowSelects(selectedRows);
+      setRowKeysSelect(selectedRowKeys)
     },
     getCheckboxProps: (record) => ({
       disabled: record.name === 'Disabled User', // Column configuration not to be checked
@@ -111,7 +110,7 @@ export default function CustomerAdmin() {
 
   const deleteRows = () => {
     const ids = rowSelects.map(r => r._id);
-    axiosClient.delete('/teachers', {
+    axiosClient.delete('/customers', {
       data: { ids }
     }).then((res) => {
       if (res.status === 200) {

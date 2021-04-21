@@ -28,7 +28,7 @@ const columns = [
     dataIndex: 'avatar',
     key: 'avatar',
     render: data => <><img src={data} style={{
-      width: "200px", height: "200px", objectFit: "cover", 
+      width: "200px", height: "200px", objectFit: "cover",
       borderRadius: "100px"
     }} /></>,
     width: '10%',
@@ -37,14 +37,14 @@ const columns = [
     title: "Mô tả",
     dataIndex: 'description',
     key: 'description',
-    width: '50%',
+    width: '40%',
   },
   {
     title: "Ngày tạo",
     dataIndex: 'createdAt',
     key: 'createdAt',
     render: value => moment(value).format("DD-MM-YYYY"),
-    width: '8%',
+    width: '15%',
   },
 ]
 
@@ -118,7 +118,7 @@ export default function NewsAdmin() {
             type: "radio",
             ...rowSelection
           }}
-          
+
         />
 
         <ModalCRUD
