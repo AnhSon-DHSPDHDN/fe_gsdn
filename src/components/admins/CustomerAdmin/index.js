@@ -32,6 +32,13 @@ const columns = [
     width: '10%',
   },
   {
+    title: "Vai trò",
+    dataIndex: 'isTeacher',
+    key: 'isTeacher',
+    render: value => value ? "Gia sư" : "Khách",
+    width: '10%',
+  },
+  {
     title: "Địa chỉ",
     dataIndex: 'address',
     key: 'address',

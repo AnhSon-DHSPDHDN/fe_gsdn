@@ -13,8 +13,8 @@ import { TypeContextInfoMe } from '../../configs/typeContext';
 const { Header, Content, Footer, Sider } = Layout;
 
 function Admin({ children }) {
-    const { data, dispatch } = useContext(InfoMeContext)
-    const [collapsed, setCollapsed] = useState(false);
+  const { data, dispatch } = useContext(InfoMeContext)
+  const [collapsed, setCollapsed] = useState(false);
   const [userAuthor, setUserAuthor] = useState(null)
   const onCollapse = () => {
     setCollapsed(!collapsed)
@@ -46,26 +46,31 @@ function Admin({ children }) {
         <div className="logo" />
         <Menu theme="dark" mode="inline">
           <Menu.Item key="1" icon={<PieChartOutlined />}>
+            <Link to="/admin">
+              Tổng quan
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="2" icon={<PieChartOutlined />}>
             <Link to="/admin/teacher">
               Gia Sư
             </Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<PieChartOutlined />}>
+          <Menu.Item key="3" icon={<PieChartOutlined />}>
             <Link to="/admin/customer">
               Người dùng
             </Link>
           </Menu.Item>
-          <Menu.Item key="3" icon={<DesktopOutlined />}>
+          <Menu.Item key="4" icon={<DesktopOutlined />}>
             <Link to="/admin/users">
               Users
             </Link>
           </Menu.Item>
-          <Menu.Item key="4" icon={<FileOutlined />}>
+          <Menu.Item key="5" icon={<FileOutlined />}>
             <Link to="/admin/news">
               News
             </Link>
           </Menu.Item>
-          <Menu.Item key="5" icon={<FileOutlined />}>
+          <Menu.Item key="6" icon={<FileOutlined />}>
             <Link to="/admin/developer">
               Developer
             </Link>
